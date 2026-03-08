@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Вхід | ProSvet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#22a6d9",
+              muted: "#f3f6f9",
+              border: "#e5e7eb",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        background: radial-gradient(circle at center, #e9eef3 0%, #f7f9fb 70%);
+      }
+    </style>
+  </head>
+
+  <body class="font-[Inter] min-h-screen">
+    <!-- ===== HEADER ===== -->
+    <header
+      class="w-full bg-white border-b border-border fixed top-0 left-0 z-50"
+    >
+      <div class="max-w-6xl mx-auto px-6 py-4 flex items-center gap-3">
+        <a href="/index" class="flex items-center gap-3">
+          <div>
+            <img
+              src="static/goose.jpg"
+              alt="ProSvet Logo"
+              class="w-7 h-7 object-contain"
+            />
+          </div>
+
+          <span class="font-bold text-lg">ProSvet</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- ===== CONTENT ===== -->
+    <main class="pt-28 flex justify-center">
+      <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+        <h1 class="text-2xl font-bold mb-2 text-center">Вход в аккаунт</h1>
+        <p class="text-gray-500 font-bold text-center mb-6">
+          Введите данные для входа в блокнот
+        </p>
+
+        <!-- ERROR MESSAGE -->
+        <div
+          id="errorMessage"
+          class="mb-4 p-4 rounded-lg bg-red-100 text-red-700 hidden"
+          role="alert"
+        >
+          <p id="errorText"></p>
+        </div>
+
+        <!-- SUCCESS MESSAGE -->
+        <div
+          id="successMessage"
+          class="mb-4 p-4 rounded-lg bg-green-100 text-green-700 hidden"
+          role="alert"
+        >
+          <p>✓Вход успешен! Перенаправление...</p>
+        </div>
+
+        <form id="loginForm" class="space-y-4" novalidate>
+          <div>
+            <label class="font-semibold">Email</label>
+            <input
+              id="emailInput"
+              type="email"
+              placeholder="Email"
+              class="w-full px-4 py-3 rounded-lg border border-border bg-muted focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            />
+            <p id="emailError" class="text-red-600 text-sm mt-1 hidden"></p>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center text-sm mb-2">
+              <label class="font-semibold">Пароль</label>
+            </div>
+
+            <input
+              id="passwordInput"
+              type="password"
+              placeholder="••••••••"
+              class="w-full px-4 py-3 rounded-lg border border-border bg-muted focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            />
+            <p id="passwordError" class="text-red-600 text-sm mt-1 hidden"></p>
+          </div>
+
+          <button
+            id="submitBtn"
+            type="submit"
+            class="w-full mt-4 py-3 rounded-xl text-white font-bold transition-all duration-300 ease-in-out hover:scale-[1.03] active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            style="
+              background: linear-gradient(
+                135deg,
+                hsla(200, 80%, 50%, 0.94),
+                hsl(175 60% 45%)
+              );
+            "
+          >
+            Войти
+          </button>
+        </form>
+
+        <div class="text-center mt-6">
+          <p class="font-semibold text-gray-600 mb-2">Нет аккаунта?</p>
+          <a
+            href="/register"
+            class="block px-4 py-3 rounded-xl font-bold text-gray-600 border-2 transition-all duration-300 ease-in-out hover:bg-[rgb(46,184,172)] hover:text-white hover:scale-[1.04] active:scale-[0.97]"
+          >
+            Зарегистрироваться
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const form = document.getElementById("loginForm");
+      const emailInput = document.getElementById("emailInput");
+      const passwordInput = document.getElementById("passwordInput");
+      const submitBtn = document.getElementById("submitBtn");
+      const errorMessage = document.getElementById("errorMessage");
+      const errorText = document.getElementById("errorText");
+      const successMessage = document.getElementById("successMessage");
+
+      // Валідація email
+      function validateEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+      }
+
+      // Форматирование ошибок от сервера
+      function getServerErrorMessage(error) {
+        if (!error) return 'Ошибка при входе';
+        const detail = error?.detail;
+        if (typeof detail === 'string') return detail;
+        if (Array.isArray(detail)) {
+          return detail
+            .map((item) => (item?.msg ? item.msg : JSON.stringify(item)))
+            .join(' | ');
+        }
+        if (typeof detail === 'object') {
+          if (detail?.message) return detail.message;
+          return JSON.stringify(detail);
+        }
+        return String(detail);
+      }
+
+      // Показ помилок
+      function showError(fieldId, message) {
+        const errorEl = document.getElementById(fieldId + "Error");
+        errorEl.textContent = message;
+        errorEl.classList.remove("hidden");
+      }
+
+      // Приховування помилок
+      function hideError(fieldId) {
+        const errorEl = document.getElementById(fieldId + "Error");
+        errorEl.classList.add("hidden");
+      }
+
+      // Валідація на клієнті при вводі
+      emailInput.addEventListener("blur", () => {
+        if (emailInput.value && !validateEmail(emailInput.value)) {
+          showError("email", "Введите корректный email");
+        } else {
+          hideError("email");
+        }
+      });
+
+      // Відправка форми
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        // Валідація
+        let isValid = true;
+
+        if (!email) {
+          showError("email", "Email обязательный");
+          isValid = false;
+        } else if (!validateEmail(email)) {
+          showError("email", "Введите корректный email");
+          isValid = false;
+        } else {
+          hideError("email");
+        }
+
+        if (!password) {
+          showError("password", "Пароль обязателен");
+          isValid = false;
+        } else {
+          hideError("password");
+        }
+
+        if (!isValid) return;
+
+        // Відправка на сервер
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Загрузка...";
+        errorMessage.classList.add("hidden");
+
+        try {
+          const response = await fetch("/auth/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem("access_token", data.access_token);
+            localStorage.setItem("token", data.access_token);
+            successMessage.classList.remove("hidden");
+            setTimeout(() => {
+              window.location.href = "/notebook";
+            }, 1500);
+          } else {
+            const error = await response.json();
+            errorText.textContent = getServerErrorMessage(error);
+            errorMessage.classList.remove("hidden");
+          }
+        } catch (err) {
+          errorText.textContent = "Ошибка подключения к серверу";
+          errorMessage.classList.remove("hidden");
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Войти";
+        }
+      });
+    </script>
+  </body>
+</html>

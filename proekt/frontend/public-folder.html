@@ -1,0 +1,1198 @@
+<!-- proekt/frontend/public-folder.html -->
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Папка</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+<style>
+  .page-hidden {
+    opacity: 0;
+  }
+  .page-visible {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+</style>
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              /* Base */
+              background: "hsl(210 20% 98%)",
+              foreground: "hsl(222 47% 11%)",
+
+              /* Surfaces */
+              card: "hsl(0 0% 100%)",
+              muted: "hsl(210 15% 95%)",
+              border: "hsl(210 20% 90%)",
+
+              /* Brand */
+              primary: "hsl(200 80% 50%)",
+              primaryHover: "hsl(200 80% 45%)",
+
+              /* States */
+              success: "hsl(145 63% 42%)",
+              warning: "hsl(38 92% 50%)",
+              danger: "hsl(0 72% 51%)",
+
+              /* Text */
+              textMuted: "hsl(215 16% 47%)",
+            },
+
+            fontFamily: {
+              sans: ["Inter", "system-ui"],
+              display: ["Plus Jakarta Sans", "system-ui"],
+            },
+
+            boxShadow: {
+              card: "0 10px 30px rgba(0,0,0,.08)",
+              hover: "0 16px 40px rgba(0,0,0,.14)",
+            },
+
+            backgroundImage: {
+              "gradient-primary":
+                "linear-gradient(135deg, hsla(200,80%,50%,0.94), hsl(175 60% 45%))",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      :root {
+        --gradient-primary: linear-gradient(
+          135deg,
+          hsla(200, 80%, 50%, 0.94),
+          hsl(175 60% 45%)
+        );
+      }
+    </style>
+  </head>
+  <style>
+#userStars span {
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#userStars span.hovered {
+  color: gold;
+}
+
+</style>
+
+<body class="bg-background font-sans page-hidden">
+    <div class="flex min-h-screen">
+      <!-- SIDEBAR -->
+      <aside class="w-64 bg-white border-r border-border flex flex-col">
+        <div class="h-16 flex items-center px-6 border-b border-border">
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden"
+          >
+            <img
+              src="static/goose.jpg"
+              alt="ProSvet Logo"
+              class="w-6 h-6 object-contain"
+            />
+          </div>
+
+          <span class="ml-3 font-display font-bold text-xl">ProSvet</span>
+          <div class="absolute top-16 left-0 w-full h-px bg-border"></div>
+        </div>
+
+        <nav class="flex-1 px-5 py-6 space-y-2">
+          <a
+            class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 font-extrabold text-sm hover:text-primary hover:bg-gray-200 transition-colors"
+            href="/notebook"
+          >
+            <!-- Open folder icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke="gray"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <!-- Клапан відкритої папки -->
+              <path
+                d="M 3 7 h6 l2 3 h10 a 2 2 0 0 1 2 2 v9 a 2 2 0 0 1-2 2 H3 a2 2 0 0 1-2-2 V10 a2 2 0 0 1 2-2z h1"
+              />
+              <!-- Внутрішня лінія, щоб показати “відкриття” -->
+              <path d="M3 10h18" />
+            </svg>
+            Мой блокнот
+          </a>
+
+          <a
+            class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 font-extrabold text-sm hover:text-primary hover:bg-gray-200 transition-colors"
+            href="/public"
+          >
+            <!-- Globe icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M2 12h20" />
+              <path d="M12 2a15 15 0 0 1 0 20" />
+              <path d="M12 2a15 15 0 0 0 0 20" />
+            </svg>
+            <span>Публичное</span>
+          </a>
+
+          <a
+            class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 font-extrabold text-sm hover:text-primary hover:bg-gray-200 transition-colors"
+            href="/settings"
+          >
+            <!-- Settings icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l0 0a2 2 0 1 1-2.83 2.83l0 0a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v0a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l0 0a2 2 0 1 1-2.83-2.83l0 0a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h0a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l0 0a2 2 0 1 1 2.83-2.83l0 0a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v0a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l0 0a2 2 0 1 1 2.83 2.83l0 0a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h0a1.65 1.65 0 0 0-1.51 1z"
+              />
+            </svg>
+            <span>
+Настройка</span>
+          </a>
+        </nav>
+
+        <!-- USER INFO + LOGOUT -->
+        <div class="p-4 border-t border-border">
+          <a
+            id="logoutLink"
+            class="flex items-center gap-2 px-3 py-2 rounded-xl text-gray-500 font-bold cursor-pointer transition-colors duration-200"
+            style="--hover-bg: rgb(46, 184, 172)"
+            onmouseover="
+              this.style.backgroundColor = 'var(--hover-bg)';
+              this.style.color = 'red';
+            "
+            onmouseout="
+              this.style.backgroundColor = '';
+              this.style.color = 'gray';
+            "
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <!-- двері -->
+              <path d="M3 3h12v18H3z" />
+              <!-- стрілка -->
+              <path d="M16 12h5" />
+              <path d="M19 9l3 3-3 3" />
+            </svg>
+
+            Выйти
+          </a>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+<main class="flex-1 p-8">
+        <!-- HEADER -->
+<div class="max-w-5xl mx-auto mt-10">
+  <!-- Back -->
+  <a
+    href="/public"
+    class="text-sm font-semibold text-gray-500 hover:underline"
+  >
+    ← Публичные материалы
+  </a>
+
+  <!-- CARD -->
+  <div
+    class="mt-4 bg-white rounded-2xl border border-border shadow-sm p-6"
+  >
+    <div class="flex gap-4">
+      <!-- Icon -->
+      <div
+        class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-7 h-7 text-primary"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M3 7h6l2 3h10v10a2 2 0 0 1-2 2H3z" />
+        </svg>
+      </div>
+
+      <!-- Info -->
+      <div class="flex-1">
+        <h1
+          id="folderTitle"
+          class="font-display text-2xl font-bold"
+        >
+          Проекты
+        </h1>
+
+        <p id="folderDescription" class="text-gray-500 mt-1">
+          
+Примеры готовых проектов для портфолио с исходным кодом.
+        </p>
+
+        <!-- Meta -->
+<div class="flex flex-wrap items-center gap-5 text-sm text-gray-600 mt-3">
+                  <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 text-gray-600"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 16-4 16 0" />
+              </svg>
+  <span id="folderOwner"> Анна М.</span>
+
+<span id="folderDateSpan" class="flex items-center gap-2">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="w-4 h-4 text-gray-600"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    stroke-width="2"
+  >
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+    <line x1="16" y1="2" x2="16" y2="6"></line>
+    <line x1="8" y1="2" x2="8" y2="6"></line>
+    <line x1="3" y1="10" x2="21" y2="10"></line>
+  </svg>
+
+  8 лютого 2026
+</span>
+
+  <span class="flex items-center gap-1">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-4 h-4 text-gray-600" 
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M2 12h20" />
+      <path d="M12 2a15 15 0 0 1 0 20" />
+      <path d="M12 2a15 15 0 0 0 0 20" />
+    </svg>
+    <span>Публично</span>
+  </span>
+</div>
+
+      </div>
+    </div>
+
+    <hr class="my-5" />
+
+    <!-- Rating -->
+    <!-- Rating -->
+    <div class="flex justify-between items-center">
+      <div>
+        <p class="text-sm text-gray-500 mb-1">Общая оценка</p>
+
+        <div class="flex items-center gap-2">
+          <div id="overallStars" class="text-yellow-400 text-lg"></div>
+          <span id="overallRating" class="font-semibold text-gray-700">
+            0.0 (0)
+          </span>
+        </div>
+      </div>
+
+      <div class="text-right">
+        <p class="text-sm  font-semibold mb-1">Ваша оценка</p>
+
+        <div class="flex items-center gap-2 justify-end">
+<div id="userStars" class="flex text-gray-300 text-lg">
+</div>
+          <span id="userRating" class="font-semibold ">
+            Не оценено
+          </span>
+        </div>
+      </div>
+    </div>
+
+  <!-- FILES TITLE -->
+  <h2 class="mt-8 text-lg font-semibold">
+    Файлы (<span id="filesCount">1</span>)
+  </h2>
+</div>
+
+
+
+      <!-- FILE GRID -->
+<div
+  id="fileGrid"
+  class="max-w-5xl mx-auto mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+></div>
+      <!-- EMPTY STATE -->
+      <div id="emptyState" class="text-center text-gray-500 mt-20 hidden">
+        <div class="mb-4 flex justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-20 h-20 text-gray-400"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M16 16l-4-4-4 4" />
+            <path d="M12 12v9" />
+            <path
+              d="M20 16.5a4.5 4.5 0 0 0-1.5-8.7 6 6 0 0 0-11.6 1A4 4 0 0 0 4 16.5"
+            />
+          </svg>
+        </div>
+
+        <p class="text-2xl font-medium">Папка пуста</p>
+        <p class="text-lg font-semibold">
+          В этой публичной папке нет файлов
+        </p>
+      </div>
+      <!-- COMMENTS -->
+<div class="max-w-5xl mx-auto mt-16">
+
+  <!-- TITLE -->
+  <h3 class="flex items-center gap-2 text-lg font-semibold mb-4">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-primary"
+      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
+    </svg>
+    Комментарии (<span id="commentsCount">0</span>)
+  </h3>
+
+  <!-- ADD COMMENT -->
+  <div class="flex gap-3 mb-6">
+
+    <!-- Avatar -->
+    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-primary">
+      K
+    </div>
+
+    <div class="flex-1">
+
+      <textarea
+        id="commentInput"
+        maxlength="500"
+        placeholder="Напишіть коментар..."
+        class="w-full p-3 rounded-xl border border-border focus:ring-2 focus:ring-primary outline-none resize-none"
+        rows="3"
+      ></textarea>
+
+      <div class="flex justify-between items-center mt-2">
+
+        <span id="charCount" class="text-sm text-gray-400">
+          0/500
+        </span>
+
+<button
+  id="sendCommentBtn"
+  class="px-5 py-2 rounded-xl text-white font-semibold
+         bg-primary hover:bg-primaryHover transition flex items-center gap-2"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="w-5 h-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <line x1="22" y1="2" x2="11" y2="13"></line>
+    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+  </svg>
+
+  Отправить
+</button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPTY -->
+  <div
+    id="commentsEmpty"
+    class="border border-dashed border-border rounded-2xl p-10 text-center text-gray-400"
+  >
+    <div class="flex justify-center mb-3">
+      <svg xmlns="http://www.w3.org/2000/svg"
+        class="w-8 h-8"
+        viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
+      </svg>
+    </div>
+    Пока нет комментариев. Будьте первым!
+  </div>
+
+  <!-- LIST -->
+  <div id="commentsList" class="space-y-4 hidden"></div>
+
+</div>
+
+    </main>
+
+    <script>
+      const API_URL = "http://127.0.0.1:8000";
+
+      const params = new URLSearchParams(window.location.search);
+      let folderId = params.get("id");
+
+      const fileGrid = document.getElementById("fileGrid");
+      const emptyState = document.getElementById("emptyState");
+      const title = document.getElementById("folderTitle");
+      const count = document.getElementById("filesCount");
+      const desc = document.getElementById("folderDescription");
+      const ownerSpan = document.getElementById("folderOwner");
+      const dateSpan = document.getElementById("folderDateSpan");
+            let files = [];  // ✅ Инициализация переменной
+
+      if (!folderId) {
+        document.body.innerHTML = "<p>❌ Немає ID папки</p>";
+        throw new Error("No folder id");
+      }
+
+
+      async function loadFolderInfo() {
+        try {
+          console.log("Fetching folder info for:", folderId);
+
+          const token = localStorage.getItem("token") || localStorage.getItem("access_token") || localStorage.getItem("access_token");
+          let url = `${API_URL}/files/folder-info/${folderId}`;
+          if (token) {
+            url += `?token=${token}`;
+          }
+
+          const res = await fetch(url);
+          if (!res.ok) throw new Error("Ошибка загрузки папки");
+
+          const folder = await res.json();
+          console.log("Folder info:", folder);
+
+          title.textContent = folder.name;
+          desc.textContent = folder.comment || "Без описания";
+          ownerSpan.textContent = folder.owner || "Неизвестно";
+
+          const date = new Date(folder.date);
+          const formattedDate = date.toLocaleDateString("uk-UA", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+          });
+
+          dateSpan.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            ${formattedDate}
+          `;
+          // expose is_public for frontend
+          window.folderIsPublic = !!folder.is_public;
+
+        } catch (e) {
+          console.error("Error loadFolderInfo:", e);
+        }
+      }
+
+      async function loadFiles() {
+        try {
+          const token = localStorage.getItem("token") || localStorage.getItem("access_token") || localStorage.getItem("access_token");
+          let url = `${API_URL}/files/folder/${folderId}`;
+          if (token) {
+            url += `?token=${token}`;
+          }
+
+          const res = await fetch(url);
+          if (!res.ok) throw new Error("Ошибка загрузки файлов");
+
+          const data = await res.json();
+          
+          // Нова структура відповіді має files та can_delete_folder
+          files = data.files || data;  // Назад сумісність
+          
+          renderFiles();
+        } catch (e) {
+          console.error(e);
+          emptyState.innerHTML = `<p>❌ ${e.message}</p>`;
+          emptyState.classList.remove("hidden");
+        }
+      }
+
+      function getFileType(fileName) {
+        const ext = fileName.split(".").pop().toLowerCase();
+
+        if (["mp3", "wav", "ogg", "m4a"].includes(ext)) return "audio";
+        if (["mp4", "mov", "avi", "mkv"].includes(ext)) return "video";
+        if (["jpg", "jpeg", "png", "gif", "webp", "bmp"].includes(ext))
+          return "image";
+        if (
+          ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt"].includes(
+            ext,
+          )
+        )
+          return "document";
+        return "other";
+      }
+
+      function getFileIcon(type) {
+        const icons = {
+          video: `
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="5 3 19 12 5 21 5 3"/>
+      </svg>
+    `,
+          audio: `
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18V5l12-2v13"/>
+        <circle cx="6" cy="18" r="3"/>
+        <circle cx="18" cy="16" r="3"/>
+      </svg>
+    `,
+          image: `
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+    `,
+          document: `
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <path d="M14 2v6h6"/>
+      </svg>
+    `,
+          default: `
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+        <path d="M3 3l18 18"/>
+      </svg>
+    `,
+        };
+
+        return icons[type] || icons["default"];
+      }
+
+
+
+
+      async function deleteFileById(fileId) {
+        if (!confirm("Вы уверены, что хотите удалить файл?")) return;
+        const token = localStorage.getItem("token") || localStorage.getItem("access_token") || localStorage.getItem("access_token");
+        if (!token) { alert('Пожалуйста, авторизуйтесь'); return; }
+        try {
+          const res = await fetch(`${API_URL}/files/file/${fileId}?token=${token}`, { method: 'DELETE' });
+          if (!res.ok) { const err = await res.json(); throw new Error(err.detail || 'Ошибка удаления'); }
+          // Перезавантажим файли
+          await loadFiles();
+        } catch (e) { alert('❌ ' + e.message); }
+      }
+
+
+            function renderFiles(list = files) {
+        fileGrid.innerHTML = "";
+
+        list.forEach((file) => {
+          const card = document.createElement("div");
+          card.className =
+            "relative group bg-white rounded-2xl border border-border overflow-hidden  hover:shadow-card transition transform hover:-translate-y-1 duration-300 z-0";
+
+          card.innerHTML = `
+  <!-- PREVIEW -->
+<div class="relative h-36 bg-muted flex items-center justify-center overflow-visible">
+
+    <!-- FILE ICON -->
+<div class="text-4xl transition-opacity duration-300 group-hover:opacity-0"> ${getFileIcon(getFileType(file.name))} </div>
+
+
+    <!-- HOVER OVERLAY -->
+    <div
+      class="absolute inset-0 bg-black/40
+             flex items-center justify-center gap-3
+             opacity-0 group-hover:opacity-100
+             transition-opacity duration-300"
+    >
+<button
+  onclick="openFilePage(${file.id})"
+  class="w-10 h-10 bg-white rounded-xl flex items-center justify-center
+         hover:scale-105 transition"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="w-5 h-5 text-gray-800"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+    <circle cx="12" cy="12" r="3"/>
+  </svg>
+</button>
+
+<button
+  onclick="downloadFile(${file.id}, '${file.name.replace(/'/g, "\\'")}')"
+  class="w-10 h-10 bg-white rounded-xl flex items-center justify-center
+         hover:scale-105 transition"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="w-5 h-5 text-gray-800"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+    <path d="M7 10l5 5 5-5"/>
+    <path d="M12 15V3"/>
+  </svg>
+</button>
+    </div>
+
+  </div>
+
+  <!-- INFO -->
+  <div class="p-4">
+<span class="inline-block text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full mb-2">
+  ${getFileType(file.name).charAt(0).toUpperCase() + getFileType(file.name).slice(1)}
+</span>
+
+    <h3 class="font-medium leading-snug truncate">
+      ${file.name.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+    </h3>
+
+<div class="flex justify-between text-sm text-gray-500 mt-2">
+  <span>${file.size}</span>
+</div>
+  </div>
+`;
+
+          function formatDate(isoString) {
+            if (!isoString) return "Только";
+
+            const date = new Date(isoString);
+            if (isNaN(date)) return "Только";
+
+            const now = new Date();
+            const diff = (now - date) / 1000;
+
+            if (diff < 60) return "Только";
+            if (diff < 3600) return Math.floor(diff / 60) + " мин назад";
+            if (diff < 86400) return Math.floor(diff / 3600) + "чяс назад";
+
+            return date.toLocaleDateString("uk-UA", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+          }
+          fileGrid.appendChild(card);
+
+        // ✅ Подсчет файлів
+        count.textContent = list.length;
+        });
+      }
+
+async function downloadFile(fileId, fileName) {
+  try {
+    const token = localStorage.getItem("access_token");
+    const url = `${API_URL}/files/download/${fileId}${token ? `?token=${token}` : ""}`;
+    const res = await fetch(url);
+          if (!res.ok) throw new Error("Не удалось загрузить файл");
+
+          const blob = await res.blob();
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = fileName;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        } catch (e) {
+          alert("❌ " + e.message);
+        }
+      }
+
+      function openFilePage(fileId) {
+        const file = files.find((f) => f.id === fileId);
+        if (!file) return;
+
+        const ext = file.name.split('.').pop().toLowerCase();
+        const noPreviewExts = [
+          "ppt",
+          "pptx",
+          "exe",
+          "xls",
+          "xlsx",
+          "m2ts",
+          "mts",
+          "webm",
+          "zip",
+          "ogg",
+          "oga",
+          "tif",
+          "ico",
+          "tiff",
+        ];
+        if (noPreviewExts.includes(ext)) {
+          alert('Даний формат файлу не призначений для перегляду');
+          return;
+        }
+
+        const token =
+          localStorage.getItem('token') ||
+          localStorage.getItem('access_token');
+        const tokenParam = token ? `?token=${token}` : "";
+        const url = `${API_URL}/files/download/${fileId}${tokenParam}`;
+        const type = file.type || getFileType(file.name);
+
+        const modal = document.getElementById("viewModal");
+        const viewer = document.getElementById("fileViewer");
+        const title = document.getElementById("viewTitle");
+
+        title.innerText = file.name;
+
+        if (type === "image") {
+          viewer.innerHTML = `<img src="${url}" alt="${file.name}" class="max-w-full max-h-full object-contain" />`;
+        } else if (type === "audio") {
+          viewer.innerHTML = `<audio controls class="w-full"><source src="${url}"></audio>`;
+        } else if (type === "video") {
+          viewer.innerHTML = `<video controls class="w-full h-full max-h-full"><source src="${url}"></video>`;
+        } else if (type === "document") {
+          const ext = file.name.split(".").pop().toLowerCase();
+
+          const officeExts = ["ppt", "pptx"];
+          if (officeExts.includes(ext)) {
+            const pdfUrl = `${url}${url.includes("?") ? "&" : "?"}as_pdf=1`;
+            viewer.innerHTML = `<iframe src="${pdfUrl}" class="w-full h-full border rounded"></iframe>`;
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+            return;
+          }
+
+          const readableExts = [
+            "txt",
+            "odt",
+            "log",
+            "ini",
+            "cfg",
+            "yaml",
+            "yml",
+            "csv",
+            "json",
+            "js",
+            "py",
+            "html",
+            "xml",
+            "css",
+            "md",
+            "docx",
+            "doc",
+            "cpp",
+            "rtf",
+            "rft",
+          ];
+          if (readableExts.includes(ext)) {
+window.open(
+  `/document-reader.html?fileId=${fileId}&fileName=${encodeURIComponent(file.name)}${token ? `&token=${token}` : ""}&from=public-folder`,
+  "_blank",
+);
+            return;
+          }
+
+          // For other document types (pdf, xlsx, etc.) just open the file directly
+          window.open(url, "_blank");
+          return;
+        } else {
+          // Fallback: try to open in iframe / browser
+          viewer.innerHTML = `<iframe src="${url}" class="w-full h-full border rounded"></iframe>`;
+        }
+
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      }
+function closeViewModal() {
+        const modal = document.getElementById("viewModal");
+        const viewer = document.getElementById("fileViewer");
+        viewer.innerHTML = "";
+        modal.classList.add("hidden");
+      }
+
+      // =============== COMMENTS ===============
+      let comments = [];
+
+      const input = document.getElementById("commentInput");
+      const charCount = document.getElementById("charCount");
+      const btn = document.getElementById("sendCommentBtn");
+      const list = document.getElementById("commentsList");
+      const empty = document.getElementById("commentsEmpty");
+      const countEl = document.getElementById("commentsCount");
+
+      input.addEventListener("input", () => {
+        charCount.textContent = `${input.value.length}/500`;
+      });
+
+async function loadComments() {
+  try {
+    const token = localStorage.getItem("access_token");
+    let url = `${API_URL}/comments/folder/${folderId}`;
+    if (token) {
+      url += `?token=${token}`;
+    }
+    
+    const res = await fetch(url);
+    if (!res.ok) return;
+
+    comments = await res.json();
+    renderComments();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+btn.onclick = async () => {
+  const text = input.value.trim();
+  if (!text) return;
+
+  try {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      alert("Пожалуйста, авторизуйтесь, чтобы оставить комментарий");
+      return;
+    }
+
+    const res = await fetch(`${API_URL}/comments?token=${token}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        folder_id: folderId,
+        content: text,
+      }),
+    });
+
+    if (!res.ok) throw new Error("Не удалось отправить комментарий");
+
+    input.value = "";
+    charCount.textContent = "0/500";
+    loadComments();
+  } catch (e) {
+    alert("❌ " + e.message);
+  }
+};
+
+function renderComments() {
+  countEl.textContent = comments.length;
+
+  if (!comments.length) {
+    empty.classList.remove("hidden");
+    list.classList.add("hidden");
+    return;
+  }
+
+  empty.classList.add("hidden");
+  list.classList.remove("hidden");
+  list.innerHTML = "";
+
+  comments.forEach((c) => {
+    const el = document.createElement("div");
+
+    el.className =
+      "bg-white border border-border rounded-xl p-4 flex gap-3";
+
+    const firstLetter = c.user ? c.user.charAt(0).toUpperCase() : "U";
+
+    el.innerHTML = `
+      <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-semibold text-primary">
+        ${firstLetter}
+      </div>
+
+      <div class="flex-1">
+        <div class="flex justify-between items-center">
+          <p class="font-semibold">${c.user || "Пользователь"}</p>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-gray-400">${new Date(
+              c.created_at,
+            ).toLocaleString("uk-UA")}</span>
+            ${c.can_delete ? `
+              <button onclick="deleteComment(${c.id})" 
+                class="text-xs px-2 py-1 rounded bg-red-100 text-red-600 hover:bg-red-200 transition"
+                title="Удалить комментарий">
+                ✕
+              </button>
+            ` : ''}
+          </div>
+        </div>
+
+        <p class="text-gray-700 mt-1 word-break whitespace-pre-wrap" style="word-break: break-word; overflow-wrap: break-word;">${c.content}</p>
+      </div>
+    `;
+
+    list.appendChild(el);
+  });
+}
+
+async function deleteComment(commentId) {
+  if (!confirm("Удалить комментарий?")) return;
+  
+  try {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      alert("Необходимая авторизация");
+      return;
+    }
+    
+    const res = await fetch(`${API_URL}/comments/${commentId}?token=${token}`, {
+      method: "DELETE"
+    });
+    
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.detail || "Ошибка удаления");
+    }
+    
+    // Перезавантажимо коментарі
+    await loadComments();
+  } catch (e) {
+    alert("❌ " + e.message);
+  }
+}
+      document.getElementById("logoutLink").onclick = () => {
+        localStorage.removeItem("access_token");
+          localStorage.removeItem("token");
+        localStorage.removeItem("current_user_id");
+        window.location.href = "/index";
+      };
+
+      // =============== RATINGS ===============
+      let currentUserRating = 0;
+      let isRated = false;
+
+      async function loadRatings() {
+        try {
+          const token = localStorage.getItem("access_token");
+          const url = `${API_URL}/ratings/folder/${folderId}${token ? `?token=${token}` : ""}`;
+          const res = await fetch(url);
+          if (!res.ok) return;
+          const data = await res.json();
+          
+          updateOverallRating(data.average, data.count);
+          currentUserRating = data.userRating;
+          isRated = data.userRating > 0;
+          updateUserRating(data.userRating);
+        } catch (e) {
+          console.error("Error loadRatings:", e);
+        }
+      }
+function renderStars(rating) {
+  let stars = "";
+  for (let i = 1; i <= 5; i++) {
+    stars += i <= Math.round(rating) ? "★" : "☆";
+  }
+  return stars;
+}
+
+      function updateOverallRating(average, count) {
+        const starsEl = document.getElementById("overallStars");
+        const ratingEl = document.getElementById("overallRating");
+        
+        starsEl.innerHTML = renderStars(average);
+        ratingEl.textContent = `${average.toFixed(1)} (${count})`;
+      }
+
+function updateUserRating(rating) {
+  selectedRating = rating;
+
+  if (rating > 0) {
+    highlightStars(rating);
+    starsContainer.style.pointerEvents = "none";
+    document.getElementById("userRating").textContent = rating.toFixed(1);
+  } else {
+    highlightStars(0);
+    starsContainer.style.pointerEvents = "auto";
+    document.getElementById("userRating").textContent = "Не оценено";
+  }
+}
+
+
+
+      function selectRating(event) {
+        if (isRated) return;
+        const starsEl = document.getElementById("userStars");
+        const rect = starsEl.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const starWidth = rect.width / 5;
+        const rating = Math.ceil(x / starWidth);
+        
+        if (rating < 1) return;
+        if (rating > 5) return;
+        
+        starsEl.innerHTML = renderStars(rating);
+        starsEl.classList.add("text-yellow-400");
+        starsEl.classList.remove("text-gray-300");
+        
+        submitRating(rating);
+      }
+
+      async function submitRating(rating) {
+        try {
+          const token = localStorage.getItem("access_token");
+          if (!token) {
+            alert("Пожалуйста, авторизуйтесь, чтобы оценить");
+            return;
+          }
+          const res = await fetch(`${API_URL}/ratings?token=${token}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ folder_id: folderId, rating }),
+          });
+          if (!res.ok) throw new Error("Не удалось оценить");
+          const data = await res.json();
+          
+          updateOverallRating(data.average, data.count);
+          isRated = true;
+          currentUserRating = rating;
+          updateUserRating(rating);
+        } catch (e) {
+          console.error("Rating error:", e);
+          alert("Помилка: " + e.message);
+          updateUserRating(0);
+        }
+      }
+
+      
+      
+
+
+// Load all data
+      loadFolderInfo();
+      loadFiles();
+      loadComments();
+      loadRatings();
+
+const starsContainer = document.getElementById("userStars");
+let selectedRating = 0;
+
+function initStars() {
+  starsContainer.innerHTML = "";
+  for (let i = 1; i <= 5; i++) {
+    const star = document.createElement("span");
+    star.textContent = "★";
+    star.dataset.value = i;
+    starsContainer.appendChild(star);
+  }
+}
+
+initStars();
+
+
+// hover ефект
+starsContainer.addEventListener("mouseover", (e) => {
+  if (!e.target.dataset.value) return;
+  highlightStars(e.target.dataset.value);
+});
+
+starsContainer.addEventListener("mouseout", () => {
+  highlightStars(selectedRating);
+});
+
+// клік
+starsContainer.addEventListener("click", async (e) => {
+  if (!e.target.dataset.value) return;
+
+  const rating = Number(e.target.dataset.value);
+  selectedRating = rating;
+
+  highlightStars(rating);
+  document.getElementById("userRating").textContent = rating + ".0";
+
+  await submitRating(rating);
+});
+
+// підсвітка
+function highlightStars(value) {
+  document.querySelectorAll("#userStars span").forEach((star) => {
+    star.classList.toggle("hovered", star.dataset.value <= value);
+  });
+}
+
+Promise.all([
+  loadFolderInfo(),
+  loadFiles(),
+  loadComments(),
+  loadRatings()
+]).finally(() => {
+  document.body.classList.remove("page-hidden");
+  document.body.classList.add("page-visible");
+});
+    </script>
+  
+    <!-- VIEW FILE MODAL -->
+    <div
+      id="viewModal"
+      onclick="if (event.target === this) closeViewModal()"
+      class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50"
+    >
+      <div
+        class="bg-white w-[90%] max-w-5xl h-[80%] rounded-xl p-4 relative flex flex-col"
+      >
+
+
+        <h2 id="viewTitle" class="font-bold mb-2"></h2>
+
+        <!-- Тут показується файл -->
+        <div id="fileViewer" class="w-full h-full border rounded flex items-center justify-center bg-black/5"></div>
+      </div>
+    </div>
+</body>
+</html>

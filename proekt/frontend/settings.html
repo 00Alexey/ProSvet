@@ -1,0 +1,948 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ProSvet — 
+Публичные материалы</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              background: "hsl(210 20% 98%)",
+              foreground: "hsl(222 47% 11%)",
+              card: "hsl(0 0% 100%)",
+              muted: "hsl(210 15% 95%)",
+              border: "hsl(210 20% 90%)",
+              primary: "hsl(200 80% 50%)",
+              textMuted: "hsl(215 16% 47%)",
+            },
+            fontFamily: {
+              sans: ["Inter", "system-ui"],
+              display: ["Plus Jakarta Sans", "system-ui"],
+            },
+            backgroundImage: {
+              "gradient-primary":
+                "linear-gradient(135deg, hsla(200,80%,50%,0.94), hsl(175 60% 45%))",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      :root {
+        --gradient-primary: linear-gradient(
+          135deg,
+          hsla(200, 80%, 50%, 0.94),
+          hsl(175 60% 45%)
+        );
+      }
+
+      input:disabled,
+      textarea:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background-color: hsl(210 15% 95%) !important;
+      }
+
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 12px;
+        font-weight: bold;
+        z-index: 1000;
+        animation: slideIn 0.3s ease-out;
+      }
+
+      .notification.success {
+        background-color: #10b981;
+        color: white;
+      }
+
+      .notification.error {
+        background-color: #ef4444;
+        color: white;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="bg-background font-sans">
+    <div class="flex min-h-screen">
+      <!-- SIDEBAR -->
+      <aside class="w-64 bg-white border-r border-border flex flex-col">
+        <div class="h-16 flex items-center px-6 border-b border-border">
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden"
+          >
+            <img
+              src="static/goose.jpg"
+              alt="ProSvet Logo"
+              class="w-6 h-6 object-contain"
+            />
+          </div>
+
+          <span class="ml-3 font-display font-bold text-xl">ProSvet</span>
+          <div class="absolute top-16 left-0 w-full h-px bg-border"></div>
+        </div>
+
+        <nav class="flex-1 px-5 py-6 space-y-2">
+          <a
+            class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 font-extrabold text-sm hover:text-primary hover:bg-gray-200 transition-colors"
+            href="/notebook"
+          >
+            <!-- Open folder icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke="gray"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <!-- Клапан відкритої папки -->
+              <path
+                d="M 3 7 h6 l2 3 h10 a 2 2 0 0 1 2 2 v9 a 2 2 0 0 1-2 2 H3 a2 2 0 0 1-2-2 V10 a2 2 0 0 1 2-2z h1"
+              />
+              <!-- Внутрішня лінія, щоб показати "відкриття" -->
+              <path d="M3 10h18" />
+            </svg>
+            
+Мой блокнот
+          </a>
+
+          <a
+            class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 font-extrabold text-sm hover:text-primary hover:bg-gray-200 transition-colors"
+            href="/public"
+          >
+            <!-- Globe icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M2 12h20" />
+              <path d="M12 2a15 15 0 0 1 0 20" />
+              <path d="M12 2a15 15 0 0 0 0 20" />
+            </svg>
+            <span>Публичное</span>
+          </a>
+
+          <a
+            class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 font-extrabold text-sm hover:text-primary hover:bg-gray-200 transition-colors"
+          >
+            <!-- Settings icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l0 0a2 2 0 1 1-2.83 2.83l0 0a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v0a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l0 0a2 2 0 1 1-2.83-2.83l0 0a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h0a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l0 0a2 2 0 1 1 2.83-2.83l0 0a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v0a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l0 0a2 2 0 1 1 2.83 2.83l0 0a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h0a1.65 1.65 0 0 0-1.51 1z"
+              />
+            </svg>
+            <span>Настройка</span>
+          </a>
+        </nav>
+
+        <!-- USER INFO + LOGOUT -->
+        <div class="p-4 border-t border-border">
+          <a
+            id="logoutLink"
+            class="flex items-center gap-2 px-3 py-2 rounded-xl text-gray-500 font-bold cursor-pointer transition-colors duration-200"
+            style="--hover-bg: rgb(46, 184, 172)"
+            onmouseover="
+              this.style.backgroundColor = 'var(--hover-bg)';
+              this.style.color = 'red';
+            "
+            onmouseout="
+              this.style.backgroundColor = '';
+              this.style.color = 'gray';
+            "
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <!-- двері -->
+              <path d="M3 3h12v18H3z" />
+              <!-- стрілка -->
+              <path d="M16 12h5" />
+              <path d="M19 9l3 3-3 3" />
+            </svg>
+
+            Выйти
+
+          </a>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="flex-1 flex justify-center bg-background">
+        <div class="w-full max-w-3xl px-6 py-10 space-y-6 mt-[50px]">
+          <!-- Заголовок -->
+          <div>
+            <h1 class="text-3xl font-bold">Настройка</h1>
+            <p class="text-textMuted font-bold">
+              Управляйте вашим профилем и настройками
+            </p>
+          </div>
+
+          <!-- Профіль -->
+          <div class="bg-card border border-border rounded-2xl p-6 shadow-sm">
+            <h2 class="text-2xl font-semibold mb-1 flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6 text-primary"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 16-4 16 0" />
+              </svg>
+              Профиль
+            </h2>
+
+            <div class="flex justify-between items-center mb-6">
+              <p class="text-textMuted font-bold">Ваша личная информация</p>
+
+              <button
+                id="editProfileBtn"
+                class="px-4 py-2 text-sm font-bold border border-border rounded-xl bg-white hover:bg-primary hover:text-white transition flex items-center gap-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 20h9" />
+                  <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                </svg>
+                Изменить данные
+              </button>
+            </div>
+
+            <!-- Фото профілю -->
+            <div class="flex items-center gap-4 mb-6">
+              <!-- Аватар -->
+              <div
+                id="avatarPreview"
+                class="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl"
+                style="background: var(--gradient-primary)"
+              >
+                U
+              </div>
+
+              <!-- Кнопка -->
+              <div class="flex flex-col gap-1">
+                <label
+                  id="changePhotoBlock"
+                  class="hidden flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer bg-white font-bold text-gray-500 transition-colors duration-200"
+                >
+                  <!-- <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h3l2-3h8l2 3h3a2 2 0 0 1 2 2z"
+                    />
+                    <circle cx="12" cy="13" r="4" />
+                  </svg>
+
+                  Змінити фото
+                  <input id="avatarInput" type="file" class="hidden" />
+                </label>
+
+                <span class="text-xs text-textMuted font-bold">
+                  JPG, PNG до 2MB
+                </span> -->
+              </div>
+            </div>
+
+            <hr class="mb-6 border-border" />
+            <!-- Ім'я + Прізвище -->
+            <div class="grid grid-cols-2 gap-4 mb-4">
+              <div class="flex flex-col gap-2">
+                <label class="text-sm font-bold">Имя</label>
+                <input
+                  class="px-4 py-2 rounded-xl border font-bold border-border bg-white"
+                  id="firstName"
+                  placeholder="Введите имя"
+                  disabled
+                />
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <label class="text-sm font-bold">Фамилия</label>
+                <input
+                  class="px-4 py-2 rounded-xl font-bold border border-border bg-white"
+                  id="lastName"
+                  placeholder="Введите фамилию"
+                  disabled
+                />
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="flex flex-col gap-2 mb-4">
+              <label class="text-sm font-bold flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4 text-gray-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="m22 6-10 7L2 6" />
+                </svg>
+
+                
+Электронная почта
+              </label>
+
+              <input
+                class="px-4 py-2 rounded-xl border font-bold border-border bg-white"
+                id="emailField"
+                placeholder="user@example.com"
+                disabled
+              />
+            </div>
+
+            <!-- Телефон -->
+            <div class="flex flex-col gap-2 mb-4">
+              <label class="text-sm font-bold flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4 text-gray-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 
+               19.79 19.79 0 0 1-8.63-3.07 
+               19.5 19.5 0 0 1-6-6 
+               19.79 19.79 0 0 1-3.07-8.67 
+               A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 
+               12.84 12.84 0 0 0 .7 2.81 
+               2 2 0 0 1-.45 2.11L8.09 9.91 
+               a16 16 0 0 0 6 6l1.27-1.27 
+               a2 2 0 0 1 2.11-.45 
+               12.84 12.84 0 0 0 2.81.7 
+               A2 2 0 0 1 22 16.92z"
+                  />
+                </svg>
+
+                Телефон
+              </label>
+
+<input
+  class="px-4 py-2 rounded-xl font-bold border border-border bg-white"
+  id="phoneField"
+  placeholder="+7 XX XXX XX XX"
+  pattern="[0-9+]*"
+  inputmode="numeric"
+  maxlength="15"
+  oninput="this.value = this.value.replace(/[^0-9+]/g,'')"
+  disabled
+/>
+            </div>
+
+            <div class="flex flex-col gap-2 mb-4">
+              <label class="text-sm font-bold flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4 text-gray-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+
+                Местонахождение
+              </label>
+
+              <input
+                class="px-4 py-2 rounded-xl border font-bold border-border bg-white"
+                id="locationField"
+                placeholder="Город, страна"
+                disabled
+              />
+            </div>
+
+            <!-- Про себе -->
+            <div class="flex flex-col gap-2 mb-6">
+              <label class="text-sm font-bold">
+О себе</label>
+<textarea
+  class="px-4 py-2 rounded-xl border font-bold border-border bg-white"
+  id="aboutTextarea"
+  rows="4"
+  maxlength="1000"
+  placeholder="
+Расскажите немного о себе..."
+  disabled
+></textarea>
+<p id="aboutCounter" class="text-xs text-gray-500 text-right">0 / 1000</p>
+            </div>
+
+            <!-- Кнопка -->
+            <div id="profileActionButtons" class="hidden flex gap-3 mt-4">
+              <!-- СКАСУВАТИ -->
+              <button
+                id="cancelProfileBtn"
+                class="px-6 py-2 font-bold rounded-xl border border-border bg-white text-gray-600 flex items-center gap-2 justify-center transition-all duration-300 ease-in-out hover:bg-gray-100 hover:-translate-y-1 active:translate-y-0"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+                
+Отменить
+              </button>
+
+              <!-- ЗБЕРЕГТИ -->
+              <button
+                id="saveProfileBtn"
+                class="px-6 py-2 font-bold rounded-xl text-white flex items-center gap-2 justify-center transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl active:translate-y-0 active:shadow-md"
+                style="background: var(--gradient-primary)"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+                  />
+                  <polyline points="17 21 17 13 7 13 7 21" />
+                  <polyline points="7 3 7 8 15 8" />
+                </svg>
+                
+Сохранить профиль
+              </button>
+            </div>
+          </div>
+          <!-- Сповіщення
+          <div class="bg-card border border-border rounded-2xl p-6 shadow-sm">
+            <h2 class="text-lg font-bold mb-1 flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 text-gray-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+              Сповіщення
+            </h2>
+
+            <p class="text-textMuted mb-4 font-bold text-sm">
+              Налаштуйте які сповіщення отримувати
+            </p>
+
+            <div class="space-y-3">
+
+              <div
+                class="flex justify-between items-center bg-muted rounded-xl px-4 py-3"
+              >
+                <div>
+                  <p class="font-medium">Email-сповіщення</p>
+                  <p class="text-sm text-textMuted">Сповіщення на пошту</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" checked />
+                  <div
+                    class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-primary transition"
+                  ></div>
+                  <div
+                    class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-5"
+                  ></div>
+                </label>
+              </div>
+
+
+              <div
+                class="flex justify-between items-center bg-muted rounded-xl px-4 py-3"
+              >
+                <div>
+                  <p class="font-medium">Оновлення файлів</p>
+                  <p class="text-sm text-textMuted">
+                    Сповіщення про зміни у файлах
+                  </p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" checked />
+                  <div
+                    class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-primary transition"
+                  ></div>
+                  <div
+                    class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-5"
+                  ></div>
+                </label>
+              </div>
+
+
+              <div
+                class="flex justify-between items-center bg-muted rounded-xl px-4 py-3"
+              >
+                <div>
+                  <p class="font-medium">Спільний доступ</p>
+                  <p class="text-sm text-textMuted">
+                    Коли хтось ділиться з вами
+                  </p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" />
+                  <div
+                    class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-primary transition"
+                  ></div>
+                  <div
+                    class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-5"
+                  ></div>
+                </label>
+              </div>
+
+              <div
+                class="flex justify-between items-center bg-muted rounded-xl px-4 py-3"
+              >
+                <div>
+                  <p class="font-medium">Розсилка</p>
+                  <p class="text-sm text-textMuted">
+                    Новини та оновлення платформи
+                  </p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" />
+                  <div
+                    class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-primary transition"
+                  ></div>
+                  <div
+                    class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-5"
+                  ></div>
+                </label>
+              </div>
+            </div>
+
+            <button
+              class="mt-4 px-5 py-2 rounded-xl border border-gray-300 bg-white flex items-center gap-2 font-bold text-gray-500 transition-colors duration-200 cursor-pointer"
+              onmouseover="
+                this.style.backgroundColor = 'rgb(46,184,172)';
+                this.style.color = 'white';
+              "
+              onmouseout="
+                this.style.backgroundColor = '';
+                this.style.color = 'rgb(107,114,128)';
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+                />
+                <path d="M17 21v-8H7v8" />
+                <path d="M7 3v5h8V3" />
+              </svg>
+
+              Зберегти
+            </button>
+          </div> -->
+
+          <!-- Зовнішній вигляд -->
+          <!-- <div class="bg-card border border-border rounded-2xl p-6 shadow-sm">
+            <h2 class="text-lg font-bold mb-1 flex items-center gap-2">
+              ☾��� Зовнішній вигляд
+            </h2>
+
+            <p class="text-textMuted mb-4 font-bold text-sm">
+              Налаштування теми та відображення
+            </p>
+
+            <div
+              class="flex justify-between items-center bg-muted rounded-xl px-4 py-3"
+            >
+              <div>
+                <p class="font-medium">Темна тема</p>
+                <p class="text-sm text-textMuted">Перемкнути на темний режим</p>
+              </div>
+
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input id="darkToggle" type="checkbox" class="sr-only peer" />
+                <div
+                  class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-primary transition"
+                ></div>
+                <div
+                  class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-5"
+                ></div>
+              </label>
+            </div>
+          </div> -->
+          <!-- Безпека -->
+          <!-- <div class="bg-card border border-border rounded-2xl p-6 shadow-sm">
+            <h2 class="text-lg font-bold mb-1 flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 text-gray-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z" />
+              </svg>
+              Безпека
+            </h2>
+
+            <p class="text-textMuted font-bold mb-4 text-sm">
+              Налаштування безпеки акаунту
+            </p>
+
+            <div class="space-y-4">
+              
+              <div>
+                <label class="text-sm font-medium block mb-1"
+                  >Поточний пароль</label
+                >
+                <input
+                  type="password"
+                  class="w-full px-4 py-2 rounded-xl border border-border bg-muted focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="••••••••"
+                  id="currentPassword"
+                />
+              </div>
+
+              !-- Новий пароль --
+              <div>
+                <label class="text-sm font-medium block mb-1"
+                  >Новий пароль</label
+                >
+                <input
+                  type="password"
+                  class="w-full px-4 py-2 rounded-xl border border-border bg-muted focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="••••••••"
+                  id="newPassword"
+                />
+              </div>
+
+              !-- Підтвердження --
+              <div>
+                <label class="text-sm font-medium block mb-1"
+                  >Підтвердження пароля</label
+                >
+                <input
+                  type="password"
+                  class="w-full px-4 py-2 rounded-xl border border-border bg-muted focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="••••••••"
+                  id="confirmPassword"
+                />
+              </div>
+            </div>
+
+            <button
+              id="changePasswordBtn"
+              class="mt-4 px-5 py-2 rounded-xl text-white font-semibold flex items-center gap-2 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl active:translate-y-0 active:shadow-md"
+              style="background: var(--gradient-primary)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z" />
+              </svg>
+
+              Змінити пароль
+            </button>
+          </div> -->
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const editBtn = document.getElementById("editProfileBtn");
+      const actionButtons = document.getElementById("profileActionButtons");
+      const photoBtn = document.getElementById("changePhotoBlock");
+      const cancelBtn = document.getElementById("cancelProfileBtn");
+      const saveBtn = document.getElementById("saveProfileBtn");
+
+      // Поля профіля
+      const profileFields = [
+        document.getElementById("firstName"),
+        document.getElementById("lastName"),
+        document.getElementById("emailField"),
+        document.getElementById("phoneField"),
+        document.getElementById("locationField"),
+        document.getElementById("aboutTextarea"),
+      ];
+
+      // Оригінальні дані (для скасування)
+      let originalData = {};
+      document.getElementById("logoutLink").onclick = () => {
+        localStorage.removeItem("access_token");
+          localStorage.removeItem("token");
+        localStorage.removeItem("current_user_id");
+        window.location.href = "/index";
+      };
+      
+      // Функція для показу повідомлення
+      function showNotification(message, type = "success") {
+        const notification = document.createElement("div");
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.remove();
+        }, 3000);
+      }
+
+      // Отримуємо token з localStorage
+      function getToken() {
+        // support both keys for backward compatibility
+        return localStorage.getItem("token") || localStorage.getItem("access_token");
+      }
+
+      // Завантажуємо дані з сервера при загрузці сторінки
+      window.addEventListener("DOMContentLoaded", () => {
+        loadProfileData();
+      });
+
+      // Функція для завантаження даних з сервера
+      async function loadProfileData() {
+        const token = getToken();
+        if (!token) {
+          showNotification(
+            "Ошибка: не найден токен аутентификации",
+            "error",
+          );
+          return;
+        }
+
+        try {
+          const response = await fetch(`/users/me/profile?token=${token}`);
+
+          if (!response.ok) {
+            if (response.status === 401) {
+              showNotification("Ошибка: недействительный токен", "error");
+              // Редирект на логін
+              setTimeout(() => {
+                window.location.href = "/login";
+              }, 2000);
+              return;
+            }
+            throw new Error(`Ошибка: ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          // Заповнюємо поля
+          document.getElementById("firstName").value = data.firstName || "";
+          document.getElementById("lastName").value = data.lastName || "";
+          document.getElementById("emailField").value = data.email || "";
+          document.getElementById("phoneField").value = data.phone || "";
+          document.getElementById("locationField").value = data.location || "";
+          document.getElementById("aboutTextarea").value = data.about || "";
+
+          // Зберігаємо оригіналки для скасування
+          originalData = { ...data };
+
+          // Оновлюємо перший символ аватара
+          if (data.firstName && data.firstName.length > 0) {
+            document.getElementById("avatarPreview").textContent =
+              data.firstName.charAt(0).toUpperCase();
+          }
+        } catch (error) {
+          console.error("Ошибка при загрузке профиля:", error);
+          showNotification("Ошибка при загрузке профиля", "error");
+        }
+      }
+
+      // Натиснули "Змінити дані"
+      editBtn.onclick = () => {
+        actionButtons.classList.remove("hidden");
+        photoBtn.classList.remove("hidden");
+        // Включаємо всі поля
+        profileFields.forEach((field) => {
+          field.disabled = false;
+        });
+      };
+
+      // Натиснули "Скасувати"
+      cancelBtn.onclick = () => {
+        actionButtons.classList.add("hidden");
+        photoBtn.classList.add("hidden");
+        // Заблоковуємо всі поля
+        profileFields.forEach((field) => {
+          field.disabled = true;
+        });
+        // Відновлюємо оригінальні дані
+        document.getElementById("firstName").value =
+          originalData.firstName || "";
+        document.getElementById("lastName").value = originalData.lastName || "";
+        document.getElementById("emailField").value = originalData.email || "";
+        document.getElementById("phoneField").value = originalData.phone || "";
+        document.getElementById("locationField").value =
+          originalData.location || "";
+        document.getElementById("aboutTextarea").value =
+          originalData.about || "";
+      };
+
+      // Натиснули "Зберегти профіль"
+      saveBtn.onclick = async () => {
+        const token = getToken();
+        if (!token) {
+          showNotification("Ошибка: не найдено токена", "error");
+          return;
+        }
+        document.getElementById("logoutLink").onclick = () => {
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("token");
+          localStorage.removeItem("current_user_id");
+          window.location.href = "/index";
+        };
+        // Збираємо дані
+        const profileData = {
+          firstName: document.getElementById("firstName").value,
+          lastName: document.getElementById("lastName").value,
+          phone: document.getElementById("phoneField").value,
+          location: document.getElementById("locationField").value,
+          about: document.getElementById("aboutTextarea").value,
+        };
+
+        try {
+          // Відправляємо на сервер
+          const response = await fetch(`/users/update?token=${token}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(profileData),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || `Ошибка: ${response.status}`);
+          }
+
+          // Успіш! Оновлюємо оригіналки
+          await loadProfileData();
+
+          // Приховуємо кнопки дій
+          actionButtons.classList.add("hidden");
+          photoBtn.classList.add("hidden");
+
+          // Заблоковуємо всі поля
+          profileFields.forEach((field) => {
+            field.disabled = true;
+          });
+
+          // Показуємо повідомлення про успіх
+          showNotification("✓ Профиль успешно сохранен!", "success");
+        } catch (error) {
+          console.error("Ошибка при сохранении профиля:", error);
+          showNotification(`Ошибка: ${error.message}`, "error");
+        }
+      };
+      const about = document.getElementById("aboutTextarea");
+const counter = document.getElementById("aboutCounter");
+
+about.addEventListener("input", () => {
+  counter.textContent = about.value.length + " / 1000";
+});
+    </script>
+  </body>
+</html>

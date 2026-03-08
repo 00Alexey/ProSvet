@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Просмотр документа</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background: #f5f5f5;
+      }
+      .gradient-btn {
+        background: linear-gradient(
+          135deg,
+          hsla(200, 80%, 50%, 0.94),
+          hsl(175 60% 45%)
+        );
+
+        border-radius: 999px; /* очень круглая */
+        transition: all 0.25s ease;
+      }
+
+      .gradient-btn:hover {
+        transform: translateY(-3px); /* кнопка поднимается */
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15); /* мягкая тень */
+      }
+
+      .code-block {
+        background: #1e1e1e;
+        color: #d4d4d4;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-family: "Courier New", monospace;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .text-content {
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        line-height: 1.8;
+        color: #333;
+      }
+
+      .json-content {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 1.5rem;
+      }
+      .copy-btn {
+        background: white;
+        color: #333;
+        border: 2px solid #d1d5db;
+        border-radius: 199px; /* делает кнопку максимально круглой */
+
+        transition: all 0.25s ease;
+      }
+
+      .copy-btn:hover {
+        background: hsl(175 60% 45%);
+        border-color: hsl(175 60% 45%);
+        color: white;
+
+        transform: translateY(-3px); /* поднимается */
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15); /* тень */
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <div class="min-h-screen">
+      <!-- Header -->
+      <header class="bg-white shadow-sm sticky top-0 z-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-4">
+              <h1
+                id="docTitle"
+                class="text-2xl font-bold text-gray-800 truncate"
+              ></h1>
+            </div>
+            <div class="flex gap-2">
+              <button
+                id="copyBtn"
+                onclick="copyContent()"
+                class="copy-btn px-4 py-2 hidden flex items-center gap-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  ></path>
+                </svg>
+                Копировать
+              </button>
+              <a
+                id="downloadBtn"
+                href="#"
+                class="gradient-btn px-4 py-2 text-white flex items-center gap-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12v8m0 0l-4-4m4 4l4-4M12 4v8"
+                  />
+                </svg>
+                Скачать
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div
+          id="loadingState"
+          class="bg-white rounded-lg shadow-lg p-12 text-center"
+        >
+          <div class="flex justify-center items-center gap-3">
+            <div
+              class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"
+            ></div>
+            <p class="text-gray-600 text-lg">Загрузка документа...</p>
+          </div>
+        </div>
+
+        <div id="contentArea" class="hidden">
+          <div id="documentContent" class="bg-white rounded-lg shadow-lg"></div>
+
+          <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+            <h2
+              class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 12h6M9 16h6M9 8h3m3-5H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9l-5-5z"
+                />
+              </svg>
+              Информация о файле
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div class="bg-gray-50 p-4 rounded">
+                <p class="text-gray-600 text-sm">Тип файла</p>
+                <p id="fileType" class="font-bold text-gray-800"></p>
+              </div>
+              <div class="bg-gray-50 p-4 rounded">
+                <p class="text-gray-600 text-sm">Расширение</p>
+                <p id="fileExt" class="font-bold text-gray-800"></p>
+              </div>
+              <div class="bg-gray-50 p-4 rounded">
+                <p class="text-gray-600 text-sm">Размер (байты)</p>
+                <p id="fileSize" class="font-bold text-gray-800"></p>
+              </div>
+              <div class="bg-gray-50 p-4 rounded">
+                <p class="text-gray-600 text-sm">Длина текста</p>
+                <p id="contentLength" class="font-bold text-gray-800"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="errorState"
+          class="hidden bg-red-50 border border-red-200 rounded-lg shadow-lg p-8 text-center"
+        >
+          <p class="text-red-600 text-lg font-semibold" id="errorMessage"></p>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const API_URL = "http://127.0.0.1:8000";
+      let currentContent = "";
+
+      // РћС‚СЂРёРјР°РЅРЅСЏ РїР°СЂР°РјРµС‚СЂС–РІ Р· URL
+      const params = new URLSearchParams(window.location.search);
+      const fileId = params.get("fileId");
+      const fileName = params.get("fileName");
+      const token = params.get("token");
+
+      document.getElementById("docTitle").textContent =
+        fileName || "Р”РѕРєСѓРјРµРЅС‚";
+      document.getElementById("downloadBtn").download = fileName;
+
+      function copyContent() {
+        navigator.clipboard.writeText(currentContent).then(() => {
+          alert("Текст скопирован в буфер обмена!");
+        });
+      }
+
+      function highlightJSON(obj) {
+        return JSON.stringify(obj, null, 2)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(
+            /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+            function (match) {
+              var cls = "number";
+              if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                  cls = "key";
+                } else {
+                  cls = "string";
+                }
+              } else if (/true|false/.test(match)) {
+                cls = "boolean";
+              } else if (/null/.test(match)) {
+                cls = "null";
+              }
+              return '<span class="' + cls + '">' + match + "</span>";
+            },
+          );
+      }
+
+      async function loadDocument() {
+        if (!fileId) {
+          showError("Ошибка: ID файла не найдено");
+          return;
+        }
+
+        try {
+          let url = `${API_URL}/files/read/${fileId}`;
+          if (token) {
+            url += `?token=${token}`;
+          }
+          const response = await fetch(url);
+          if (!response.ok) {
+            let errorText = response.statusText;
+            try {
+              const errJson = await response.json();
+              if (errJson && errJson.detail) {
+                errorText = errJson.detail;
+              }
+            } catch (e) {
+              // ignore JSON parse errors
+            }
+            showError(`Ошибка: ${errorText}`);
+            return;
+          }
+
+          const data = await response.json();
+          currentContent = data.content;
+
+          document.getElementById("fileType").textContent =
+            data.file_type || "неизвестно";
+          document.getElementById("fileExt").textContent =
+            data.file_extension || "неизвестно";
+          document.getElementById("fileSize").textContent =
+            data.file_size_bytes?.toLocaleString() || "0";
+          document.getElementById("contentLength").textContent =
+            data.content_length?.toLocaleString() || "0";
+
+          // Р’СЃС‚Р°РЅРѕРІР»РµРЅРЅСЏ РїРѕСЃРёР»Р°РЅРЅСЏ РґР»СЏ Р·Р°РІР°РЅС‚Р°Р¶РµРЅРЅСЏ
+          document.getElementById("downloadBtn").href =
+            `${API_URL}/files/download/${fileId}${token ? "?token=" + token : ""}`;
+
+          const ext = data.file_extension?.toLowerCase().replace(".", "") || "";
+          const contentArea = document.getElementById("documentContent");
+          const copyBtn = document.getElementById("copyBtn");
+
+          // Показування вмісту файлу
+          if (ext === "json") {
+            try {
+              const jsonData = JSON.parse(data.content);
+              contentArea.innerHTML = `<div class="code-block p-6"><pre>${highlightJSON(jsonData)}</pre></div>`;
+            } catch (e) {
+              contentArea.innerHTML = `<div class="code-block p-6"><pre>${escapeHtml(data.content)}</pre></div>`;
+            }
+          } else {
+            // всі інші файли показуємо як код (чорний блок)
+            contentArea.innerHTML = `<div class="code-block p-6"><pre>${escapeHtml(data.content)}</pre></div>`;
+          }
+
+          copyBtn.classList.remove("hidden");
+
+          document.getElementById("loadingState").classList.add("hidden");
+          document.getElementById("contentArea").classList.remove("hidden");
+        } catch (error) {
+          showError(`Помилка завантаження: ${error.message}`);
+        }
+      }
+
+      function showError(message) {
+        document.getElementById("loadingState").classList.add("hidden");
+        document.getElementById("errorState").classList.remove("hidden");
+        document.getElementById("errorMessage").textContent = message;
+      }
+
+      function escapeHtml(text) {
+        const map = {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;",
+        };
+        return text.replace(/[&<>"']/g, (m) => map[m]);
+      }
+
+      // Р—Р°РІР°РЅС‚Р°Р¶СѓС”РјРѕ РґРѕРєСѓРјРµРЅС‚ РїСЂРё Р·Р°РІР°РЅС‚Р°Р¶РµРЅРЅС– СЃС‚РѕСЂС–РЅРєРё
+      loadDocument();
+    </script>
+  </body>
+</html>

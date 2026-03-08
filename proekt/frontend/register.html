@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Регистрация |ProSvet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#22a6d9",
+              muted: "#f3f6f9",
+              border: "#e5e7eb",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        background: #f7f9fb;
+      }
+    </style>
+  </head>
+
+  <body class="font-[Inter] min-h-screen">
+    <!-- ===== HEADER ===== -->
+    <header
+      class="w-full bg-white border-b border-border fixed top-0 left-0 z-50"
+    >
+      <div class="max-w-6xl mx-auto px-6 py-4 flex items-center gap-3">
+        <a href="/index" class="flex items-center gap-3">
+          <div>
+            <img
+              src="static/goose.jpg"
+              alt="ProSvet Logo"
+              class="w-7 h-7 object-contain"
+            />
+          </div>
+
+          <span class="font-bold text-lg">ProSvet</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- ===== CONTENT ===== -->
+    <main
+      class="pt-28 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
+    >
+      <!-- LEFT INFO -->
+      <section>
+        <h1 class="text-3xl font-extrabold mb-4">
+          Присоединяйтесь к
+          <span class="text-primary">онлайн-блокнота</span>
+        </h1>
+
+        <p class="text-gray-600 mb-6 font-bold max-w-md">
+          Создайте аккаунт и начните организовывать свои видео и документы уже
+          сегодня
+        </p>
+
+        <ul class="space-y-4 font-semibold">
+          <li class="flex items-center gap-3">
+            <span
+              class="w-7 h-7 rounded-full font-bold bg-primary/10 text-primary flex items-center justify-center"
+              >✓</span
+            >
+            Бесплатное хранилище для файлов
+          </li>
+          <li class="flex items-center gap-3">
+            <span
+              class="w-7 h-7 rounded-full font-bold bg-primary/10 text-primary flex items-center justify-center"
+              >✓</span
+            >
+            Неограниченное количество папок
+          </li>
+          <li class="flex items-center gap-3">
+            <span
+              class="w-7 h-7 rounded-full font-bold bg-primary/10 text-primary flex items-center justify-center"
+              >✓</span
+            >
+
+            Гибкие настройки доступа
+          </li>
+        </ul>
+      </section>
+
+      <!-- RIGHT FORM -->
+      <section class="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full">
+        <h1 class="text-2xl font-bold mb-2 text-center">Создать аккаунт</h1>
+        <p class="text-gray-500 font-bold text-center mb-6">
+          Заполните форму для регистрации
+        </p>
+
+        <!-- ERROR MESSAGE -->
+        <div
+          id="errorMessage"
+          class="mb-4 p-4 rounded-lg bg-red-100 text-red-700 hidden"
+          role="alert"
+        >
+          <p id="errorText"></p>
+        </div>
+
+        <!-- SUCCESS MESSAGE -->
+        <div
+          id="successMessage"
+          class="mb-4 p-4 rounded-lg bg-green-100 text-green-700 hidden"
+          role="alert"
+        >
+          <p>✓ Регистрация успешна! Перенаправление...</p>
+        </div>
+
+        <form id="registerForm" class="space-y-4" novalidate>
+          <div>
+            <label class="font-semibold"> Имя</label>
+            <input
+              id="emailInput"
+              type="email"
+              placeholder="Email"
+              class="w-full px-4 py-3 rounded-lg border border-border bg-muted focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            />
+            <p id="emailError" class="text-red-600 text-sm mt-1 hidden"></p>
+          </div>
+
+          <div>
+            <label class="font-semibold">Email</label>
+            <input
+              id="passwordInput"
+              type="password"
+              placeholder="
+Пароль (мин. 6 символов)"
+              class="w-full px-4 py-3 rounded-lg border border-border bg-muted focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            />
+            <p id="passwordError" class="text-red-600 text-sm mt-1 hidden"></p>
+          </div>
+
+          <div>
+            <label class="font-semibold">Пароль</label>
+            <input
+              id="passwordConfirmInput"
+              type="password"
+              placeholder="Подтвердите пароль"
+              class="w-full px-4 py-3 rounded-lg border border-border bg-muted focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            />
+            <p
+              id="passwordConfirmError"
+              class="text-red-600 text-sm mt-1 hidden"
+            ></p>
+          </div>
+
+          <button
+            id="submitBtn"
+            type="submit"
+            class="w-full mt-4 py-3 rounded-xl bg-primary text-white font-bold hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Зарегистрироваться
+          </button>
+        </form>
+
+        <p class="text-center text-sm text-gray-600 mt-6 font-semibold">
+          Уже есть аккаунт?
+          <a href="/login" class="text-primary font-bold hover:underline"
+            >Войти</a
+          >
+        </p>
+      </section>
+    </main>
+
+    <script>
+      const form = document.getElementById("registerForm");
+      const emailInput = document.getElementById("emailInput");
+      const passwordInput = document.getElementById("passwordInput");
+      const passwordConfirmInput = document.getElementById(
+        "passwordConfirmInput",
+      );
+      const submitBtn = document.getElementById("submitBtn");
+      const errorMessage = document.getElementById("errorMessage");
+      const errorText = document.getElementById("errorText");
+      const successMessage = document.getElementById("successMessage");
+
+      function parseJwt(token) {
+        try {
+          return JSON.parse(atob(token.split(".")[1]));
+        } catch (e) {
+          return null;
+        }
+      }
+
+      // Валідація email
+      function validateEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+      }
+
+      // Валідація пароля
+      function validatePassword(password) {
+        return password.length >= 6;
+      }
+
+      // Форматирование ошибок от сервера
+      function getServerErrorMessage(error) {
+        if (!error) return 'Ошибка при регистрации';
+        const detail = error?.detail;
+        if (typeof detail === 'string') return detail;
+        if (Array.isArray(detail)) {
+          return detail
+            .map((item) => (item?.msg ? item.msg : JSON.stringify(item)))
+            .join(' | ');
+        }
+        if (typeof detail === 'object') {
+          if (detail?.message) return detail.message;
+          return JSON.stringify(detail);
+        }
+        return String(detail);
+      }
+
+      // Показ помилок
+      function showError(fieldId, message) {
+        const errorEl = document.getElementById(fieldId + "Error");
+        errorEl.textContent = message;
+        errorEl.classList.remove("hidden");
+      }
+
+      // Приховування помилок
+      function hideError(fieldId) {
+        const errorEl = document.getElementById(fieldId + "Error");
+        errorEl.classList.add("hidden");
+      }
+
+      // Валідація на клієнті при вводі
+      emailInput.addEventListener("blur", () => {
+        if (emailInput.value && !validateEmail(emailInput.value)) {
+          showError("email", "Введите корректный email");
+        } else {
+          hideError("email");
+        }
+      });
+
+      passwordInput.addEventListener("blur", () => {
+        if (passwordInput.value && !validatePassword(passwordInput.value)) {
+          showError("password", "Пароль должен быть не менее 6 символов");
+        } else {
+          hideError("password");
+        }
+      });
+
+      passwordConfirmInput.addEventListener("blur", () => {
+        if (
+          passwordConfirmInput.value &&
+          passwordInput.value !== passwordConfirmInput.value
+        ) {
+          showError("passwordConfirm", "Пароли не совпадают");
+        } else {
+          hideError("passwordConfirm");
+        }
+      });
+
+      // Відправка форми
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        const passwordConfirm = passwordConfirmInput.value;
+
+        // Валідація
+        let isValid = true;
+
+        if (!email) {
+          showError("email", "Email обязателен");
+          isValid = false;
+        } else if (!validateEmail(email)) {
+          showError("email", "Введите корректный email");
+          isValid = false;
+        } else {
+          hideError("email");
+        }
+
+        if (!password) {
+          showError("password", "Пароль обязателен");
+          isValid = false;
+        } else if (!validatePassword(password)) {
+          showError("password", "Пароль должен быть не менее 6 символов");
+          isValid = false;
+        } else {
+          hideError("password");
+        }
+
+        if (password !== passwordConfirm) {
+          showError("passwordConfirm", "Пароли не совпадают");
+          isValid = false;
+        } else {
+          hideError("passwordConfirm");
+        }
+
+        if (!isValid) return;
+
+        // Відправка на сервер
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Загрузка...";
+        errorMessage.classList.add("hidden");
+
+        try {
+          const response = await fetch("/auth/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem("access_token", data.access_token);
+            const payload = parseJwt(data.access_token);
+            // keep the same key used by other scripts
+            localStorage.setItem("token", data.access_token);
+            if (payload && payload.is_admin) {
+              localStorage.setItem("is_admin", "true");
+            } else {
+              localStorage.removeItem("is_admin");
+            }
+            const userId = payload?.room_id || payload?.user_id || null;
+            if (userId) localStorage.setItem("current_user_id", userId);
+            successMessage.classList.remove("hidden");
+            setTimeout(() => {
+              window.location.href = "/notebook";
+            }, 800);
+          } else {
+            const error = await response.json();
+            errorText.textContent = getServerErrorMessage(error);
+            errorMessage.classList.remove("hidden");
+          }
+        } catch (err) {
+          errorText.textContent = "Ошибка подключения к серверу";
+          errorMessage.classList.remove("hidden");
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Зарегистрироваться";
+        }
+      });
+    </script>
+  </body>
+</html>

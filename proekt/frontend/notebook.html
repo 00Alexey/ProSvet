@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Мой блокнот</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              /* Base */
+              background: "hsl(210 20% 98%)",
+              foreground: "hsl(222 47% 11%)",
+
+              /* Surfaces */
+              card: "hsl(0 0% 100%)",
+              muted: "hsl(210 15% 95%)",
+              border: "hsl(210 20% 90%)",
+
+              /* Brand */
+              primary: "hsl(200 80% 50%)",
+              primaryHover: "hsl(200 80% 45%)",
+
+              /* States */
+              success: "hsl(145 63% 42%)",
+              warning: "hsl(38 92% 50%)",
+              danger: "hsl(0 72% 51%)",
+
+              /* Text */
+              textMuted: "hsl(215 16% 47%)",
+            },
+
+            fontFamily: {
+              sans: ["Inter", "system-ui"],
+              display: ["Plus Jakarta Sans", "system-ui"],
+            },
+
+            boxShadow: {
+              card: "0 10px 30px rgba(0,0,0,.08)",
+              hover: "0 16px 40px rgba(0,0,0,.14)",
+            },
+
+            backgroundImage: {
+              "gradient-primary":
+                "linear-gradient(135deg, hsla(200,80%,50%,0.94), hsl(175 60% 45%))",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      :root {
+        --gradient-primary: linear-gradient(
+          135deg,
+          hsla(200, 80%, 50%, 0.94),
+          hsl(175 60% 45%)
+        );
+      }
+    </style>
+  </head>
+
+  <body class="bg-background font-sans">
+    <div class="flex min-h-screen">
+      <!-- SIDEBAR -->
+      <aside class="w-64 bg-white border-r border-border flex flex-col">
+        <div class="h-16 flex items-center px-6 border-b border-border">
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden"
+          >
+            <img
+              src="static/goose.jpg"
+              alt="ProSvet Logo"
+              class="w-6 h-6 object-contain"
+            />
+          </div>
+
+          <span class="ml-3 font-display font-bold text-xl">ProSvet</span>
+          <div class="absolute top-16 left-0 w-full h-px bg-border"></div>
+        </div>
+
+        <nav class="flex-1 px-5 py-6 space-y-2">
+          <a
+            class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 font-extrabold text-sm hover:text-primary hover:bg-gray-200 transition-colors"
+            href="/notebook"
+          >
+            <!-- Open folder icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke="gray"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <!-- Клапан відкритої папки -->
+              <path
+                d="M 3 7 h6 l2 3 h10 a 2 2 0 0 1 2 2 v9 a 2 2 0 0 1-2 2 H3 a2 2 0 0 1-2-2 V10 a2 2 0 0 1 2-2z h1"
+              />
+              <!-- Внутрішня лінія, щоб показати “відкриття” -->
+              <path d="M3 10h18" />
+            </svg>
+            Мой блокнот
+          </a>
+
+          <a
+            class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 font-extrabold text-sm hover:text-primary hover:bg-gray-200 transition-colors"
+            href="/public"
+          >
+            <!-- Globe icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M2 12h20" />
+              <path d="M12 2a15 15 0 0 1 0 20" />
+              <path d="M12 2a15 15 0 0 0 0 20" />
+            </svg>
+            <span>Публичное</span>
+          </a>
+
+          <a
+            class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 font-extrabold text-sm hover:text-primary hover:bg-gray-200 transition-colors"
+            href="/settings"
+          >
+            <!-- Settings icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l0 0a2 2 0 1 1-2.83 2.83l0 0a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v0a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l0 0a2 2 0 1 1-2.83-2.83l0 0a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h0a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l0 0a2 2 0 1 1 2.83-2.83l0 0a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v0a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l0 0a2 2 0 1 1 2.83 2.83l0 0a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h0a1.65 1.65 0 0 0-1.51 1z"
+              />
+            </svg>
+            <span>Настройка</span>
+          </a>
+        </nav>
+
+        <div class="p-4 border-t border-border">
+          <a
+            id="logoutBtn"
+            class="flex items-center gap-2 px-3 py-2 rounded-xl text-gray-500 font-bold cursor-pointer transition-colors duration-200"
+            style="--hover-bg: rgb(46, 184, 172)"
+            onmouseover="
+              this.style.backgroundColor = 'var(--hover-bg)';
+              this.style.color = 'red';
+            "
+            onmouseout="
+              this.style.backgroundColor = '';
+              this.style.color = 'gray';
+            "
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <!-- двері -->
+              <path d="M3 3h12v18H3z" />
+              <!-- стрілка -->
+              <path d="M16 12h5" />
+              <path d="M19 9l3 3-3 3" />
+            </svg>
+
+            Выйти
+          </a>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="flex-1 p-8">
+        <div class="flex justify-between items-center mb-6 mt-[50px]">
+          <div>
+            <h1 class="font-display text-3xl font-bold">Мой блокнот</h1>
+            <p id="count" class="text-gray-500">0 папка</p>
+          </div>
+          <button
+            onclick="openModal()"
+            class="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-300 text-gray-500 font-black transition-colors duration-200 cursor-pointer"
+            onmouseover="
+              this.style.backgroundColor = 'rgb(46, 184, 172)';
+              this.style.color = 'white';
+            "
+            onmouseout="
+              this.style.backgroundColor = '';
+              this.style.color = 'rgb(107,114,128)';
+            "
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6 flex-shrink-0"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M3 6a2 2 0 0 1 2-2h4l2 2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+              />
+              <line x1="12" y1="9" x2="12" y2="15" />
+              <line x1="9" y1="12" x2="15" y2="12" />
+            </svg>
+
+            Новая папка
+          </button>
+        </div>
+
+        <div class="mb-8">
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="
+Поиск папок..."
+            class="w-[1200px] px-4 py-3 rounded-xl border border-border bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div
+          id="foldersGrid"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        ></div>
+
+        <div id="emptyState" class="text-center text-gray-500 mt-20 hidden">
+          <div class="mb-4 flex justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-24 h-24 text-gray-200"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <!-- папка -->
+              <path
+                d="M3 7a2 2 0 0 1 2-2h4l2 2h10a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+              />
+              <!-- порожня лінія -->
+              <path d="M8 13h8" />
+            </svg>
+          </div>
+
+          <p class="text-2xl font-medium">Папка не найдена</p>
+          <p class="text-lg font-semibold">
+            Создайте первую папку для начала работы
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <!-- MODAL -->
+    <div
+      id="modal"
+      class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50"
+    >
+      <div class="bg-white w-full max-w-md rounded-2xl p-6 relative">
+        <button
+          onclick="closeModal()"
+          class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+        >
+          ✕
+        </button>
+
+        <h3 class="text-xl font-bold mb-1">Создать папку</h3>
+        <p class="text-sm text-gray-500 font-bold mb-4">
+          Введите имя новой папки и настройте доступ
+        </p>
+        <p class="text-medium font-bold mb-4">Название папки</p>
+
+        <input
+          id="folderName"
+          type="text"
+          placeholder="Моя папка"
+          class="w-full px-4 py-3 rounded-xl border border-border focus:ring-2 focus:ring-primary outline-none"
+        />
+
+        <div id="commentBlock" class="hidden mt-4">
+          <p class="text-medium font-bold mb-2">Описание папки</p>
+
+          <textarea
+            id="folderComment"
+            placeholder="Добавьте описание для публичной папки..."
+            class="w-full px-4 py-3 rounded-xl border border-border focus:ring-2 focus:ring-primary outline-none resize-none"
+          ></textarea>
+        </div>
+
+        <div class="flex items-center justify-between mt-6">
+          <div>
+            <p class="font-bold">Публичный доступ</p>
+            <p class="text-sm font-bold text-gray-500">
+              Другие пользователи смогут просматривать содержимое
+            </p>
+          </div>
+          <label class="inline-flex relative items-center cursor-pointer">
+            <input id="isPublic" type="checkbox" class="sr-only peer" />
+            <div
+              class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-primary after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"
+            ></div>
+          </label>
+        </div>
+
+        <div class="flex justify-end gap-3 mt-6">
+          <button
+            onclick="closeModal()"
+            class="px-4 py-2 rounded-xl border border-gray-300 font-bold text-gray-500 transition-colors duration-200 cursor-pointer"
+            onmouseover="
+              this.style.backgroundColor = 'rgb(46, 184, 172)';
+              this.style.color = 'white';
+            "
+            onmouseout="
+              this.style.backgroundColor = '';
+              this.style.color = 'rgb(107,114,128)';
+            "
+          >
+            Отменить
+          </button>
+          <button
+            id="createBtn"
+            onclick="createFolder()"
+            class="px-5 py-2 font-bold rounded-xl text-white transition-all duration-300 ease-in-out hover:scale-[1.04] active:scale-[0.97]"
+            style="
+              background: linear-gradient(
+                135deg,
+                hsla(200, 80%, 50%, 0.94),
+                hsl(175 60% 45%)
+              );
+            "
+          >
+            Создать
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ...existing code... -->
+
+    <script src="/static/js/auth.js"></script>
+
+    <script>
+      function parseJwt(token) {
+        try {
+          return JSON.parse(atob(token.split(".")[1]));
+        } catch {
+          return null;
+        }
+      }
+
+      // ✅ Отримуємо токен
+      const token = localStorage.getItem("access_token");
+      const payload = token ? parseJwt(token) : null;
+
+      if (!token || !payload) {
+        window.location.href = "/login";
+      }
+
+      const currentUser = payload?.user_id;
+      const foldersKey = `folders_${currentUser}`;
+
+      let folders = [];
+
+      const grid = document.getElementById("foldersGrid");
+      const empty = document.getElementById("emptyState");
+      const count = document.getElementById("count");
+
+      function updateUI() {
+        count.textContent = `${folders.length} папок`;
+        empty.classList.toggle("hidden", folders.length !== 0);
+      }
+      function formatDate(isoString) {
+        if (!isoString) return "Только";
+
+        const date = new Date(isoString);
+        if (isNaN(date)) return "Только";
+
+        const formattedDate = date.toLocaleDateString("uk-UA", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+
+        const formattedTime = date.toLocaleTimeString("uk-UA", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        return `${formattedDate}  ${formattedTime}`;
+      }
+
+      function renderFolders(list = folders) {
+        grid.innerHTML = "";
+
+        list.forEach((folder) => {
+          const card = document.createElement("div");
+          card.className =
+            "group cursor-pointer bg-card border border-border rounded-2xl p-5 shadow-card hover:shadow-hover hover:-translate-y-1 transition";
+
+          card.onclick = () => {
+            window.location.href = `/folder?id=${folder.id}`;
+          };
+
+          card.innerHTML = `
+          <div class="flex justify-between items-start">
+
+            <!-- ПАПКА -->
+            <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 7a2 2 0 0 1 2-2h4l2 2h10a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              </svg>
+            </div>
+
+      <!-- МЕНЮ (ТРИ ТОЧКИ) -->
+      <div class="relative">
+<button class="menu-btn opacity-0 group-hover:opacity-100 transition 
+               w-9 h-9 flex items-center justify-center 
+               border border-border rounded-xl bg-white 
+               hover:bg-[rgb(46,184,172)] hover:text-white">
+  ⋮
+</button>
+
+        <!-- Випадаюче меню -->
+<div class="menu hidden absolute right-0 mt-2 bg-white border rounded-xl shadow-lg text-sm z-50">
+
+  <button class="rename flex items-center px-4 py-2 hover:bg-gray-100 w-full text-left">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 20h9"/>
+      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
+    </svg>
+    Переименовать
+  </button>
+
+
+  <button class="delete flex items-center px-4 py-2 hover:bg-red-100 text-red-600 w-full text-left">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="3 6 5 6 21 6"/>
+      <path d="M19 6l-1 14H6L5 6"/>
+      <path d="M10 11v6"/>
+      <path d="M14 11v6"/>
+      <path d="M9 6V4h6v2"/>
+    </svg>
+    Удалить
+  </button>
+
+</div>
+
+      </div>
+
+          </div>
+
+          <h3 class="font-display font-semibold mt-3">${folder.name}</h3>
+          <p class="text-sm text-gray-500">${folder.file_count} файлів</p>
+
+          <div class="flex justify-between text-xs text-gray-400 mt-3">
+            <span>${formatDate(folder.date)}</span>
+            <span>
+      ${
+        folder.public
+          ? `
+        <span class="flex items-center gap-1 ">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M2 12h20" />
+              <path d="M12 2a15 15 0 0 1 0 20" />
+              <path d="M12 2a15 15 0 0 0 0 20" />
+            </svg>
+          Публично
+        </span>`
+          : `
+        <span class="flex items-center gap-1 text-gray-500">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 11c.55 0 1 .45 1 1v2a1 1 0 11-2 0v-2c0-.55.45-1 1-1zm6-3h-1V7a5 5 0 00-10 0v1H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2z" />
+          </svg>
+          Частная
+        </span>`
+      }
+            </span>
+          </div>
+        `;
+
+          // ===== МЕНЮ ЛОГІКА =====
+          const menuBtn = card.querySelector(".menu-btn");
+          const menu = card.querySelector(".menu");
+
+          menuBtn.onclick = (e) => {
+            e.stopPropagation();
+            menu.classList.toggle("hidden");
+          };
+
+          // Закрити меню при кліку поза ним
+          document.addEventListener("click", () => {
+            menu.classList.add("hidden");
+          });
+
+          // ===== ДІЇ МЕНЮ =====
+
+          // Видалити
+          card.querySelector(".delete").onclick = (e) => {
+            e.stopPropagation();
+            deleteFolder(folder.id);
+          };
+
+          // Перейменувати
+          card.querySelector(".rename").onclick = (e) => {
+            e.stopPropagation();
+            renameFolder(folder.id, folder.name);
+          };
+
+          grid.appendChild(card);
+        });
+
+        count.textContent = `${list.length} папок`;
+        empty.classList.toggle("hidden", list.length !== 0);
+      }
+
+      // ✅ НОВА: Завантажити папки з сервера
+      async function loadFoldersFromServer() {
+        try {
+          const res = await fetch(`/files/folders?token=${token}`);
+
+          if (!res.ok) {
+            console.error("Ошибка при загрузке папок:", res.status);
+            return;
+          }
+
+          const serverFolders = await res.json();
+          console.log("📥Папки с сервера:", serverFolders);
+
+          // Конвертувати формат з сервера в локальний
+          // Конвертувати формат з сервера в локальний
+          folders = serverFolders.map((f) => ({
+            id: f.id,
+            name: f.name,
+            public: f.is_public ? true : false,
+            comment: f.comment || "",
+            file_count: f.file_count || 0, // Додаємо кількість файлів
+            date: f.created_at || new Date().toISOString(),
+          }));
+
+          // Зберегти локально
+          localStorage.setItem(foldersKey, JSON.stringify(folders));
+          renderFolders();
+        } catch (error) {
+          console.error("Ошибка синхронизации папок:", error);
+          // Якщо сервер недоступний - використати локальні папки
+          folders = JSON.parse(localStorage.getItem(foldersKey)) || [];
+          renderFolders();
+        }
+      }
+
+      function openModal() {
+        const modal = document.getElementById("modal");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+
+        // reset
+        document.getElementById("isPublic").checked = false;
+        document.getElementById("commentBlock").classList.add("hidden");
+        document.getElementById("folderName").value = "";
+        document.getElementById("folderComment").value = "";
+        updateCreateButtonState();
+      }
+      const isPublicCheckbox = document.getElementById("isPublic");
+      const commentBlock = document.getElementById("commentBlock");
+
+      isPublicCheckbox.addEventListener("change", () => {
+        if (isPublicCheckbox.checked) {
+          commentBlock.classList.remove("hidden");
+        } else {
+          commentBlock.classList.add("hidden");
+          document.getElementById("folderComment").value = "";
+          updateCreateButtonState(); // очистити
+        }
+      });
+
+      function updateCreateButtonState() {
+        const name = document.getElementById("folderName").value.trim();
+        const createBtn = document.getElementById("createBtn");
+        if (name) {
+          createBtn.disabled = false;
+          createBtn.style.opacity = "1";
+          createBtn.style.background =
+            "linear-gradient(135deg, hsla(200, 80%, 50%, 0.94), hsl(175 60% 45%))";
+        } else {
+          createBtn.disabled = true;
+          createBtn.style.opacity = "0.5";
+          createBtn.style.background = "#ccc";
+        }
+      }
+
+      document
+        .getElementById("folderName")
+        .addEventListener("input", updateCreateButtonState);
+
+      function closeModal() {
+        const modal = document.getElementById("modal");
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+        document.getElementById("folderName").value = "";
+        document.getElementById("isPublic").checked = false;
+      }
+
+      // ✅ НОВА: Створити папку на сервері
+      async function createFolder() {
+        const name = document.getElementById("folderName").value.trim();
+        const isPublic = document.getElementById("isPublic").checked;
+        const comment = document.getElementById("folderComment").value.trim();
+
+        if (!name) return;
+
+        try {
+          const formData = new FormData();
+          formData.append("folder_name", name);
+          formData.append("is_public", isPublic);
+          formData.append("comment", comment); // ✅ ДОДАЛИ
+
+          const res = await fetch(`/files/create-folder?token=${token}`, {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            alert(`Ошибка: ${data.detail}`);
+            return;
+          }
+          folders.push({
+            id: data.id,
+            name: data.name,
+            public: isPublic,
+            comment: comment,
+            file_count: 0, // ✅ ВАЖЛИВО
+            date: new Date().toISOString(),
+          });
+
+          localStorage.setItem(foldersKey, JSON.stringify(folders));
+          closeModal();
+          renderFolders();
+        } catch (error) {
+          console.error("Ошибка:", error);
+        }
+      }
+
+      async function renameFolder(folderId, oldName) {
+        const newName = prompt("Новое название папки:", oldName);
+        if (!newName || newName === oldName) return;
+
+        try {
+          const res = await fetch(
+            `/files/rename-folder/${folderId}?token=${token}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ name: newName }),
+            },
+          );
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            alert("Ошибка: " + (data.detail || "Не удалось переименовать"));
+            return;
+          }
+
+          // Оновлюємо локальний список
+          const folder = folders.find((f) => f.id === folderId);
+          if (folder) folder.name = newName;
+
+          localStorage.setItem(foldersKey, JSON.stringify(folders));
+          renderFolders();
+        } catch (error) {
+          console.error("Ошибка:", error);
+          alert("Ошибка при переименовании папки");
+        }
+      }
+
+      async function deleteFolder(folderId) {
+        if (!confirm("Удалить папку навсегда?")) return;
+
+        try {
+          const res = await fetch(
+            `/files/delete-folder/${folderId}?token=${token}`,
+            {
+              method: "DELETE",
+            },
+          );
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            alert("Ошибка: " + data.detail);
+            return;
+          }
+
+          console.log("🗑️ Удалено:", data);
+
+          // Видаляємо з локального списку
+          folders = folders.filter((f) => f.id !== folderId);
+          localStorage.setItem(foldersKey, JSON.stringify(folders));
+          renderFolders();
+        } catch (err) {
+          console.error("Ошибка удаления:", err);
+        }
+      }
+
+      const searchInput = document.getElementById("searchInput");
+
+      searchInput.addEventListener("input", () => {
+        const query = searchInput.value.toLowerCase().trim();
+
+        if (query === "") {
+          renderFolders(); // показати всі папки
+          return;
+        }
+
+        const filteredFolders = folders.filter((folder) =>
+          folder.name.toLowerCase().includes(query),
+        );
+
+        renderFolders(filteredFolders);
+      });
+
+      // User info + logout
+      if (payload) {
+        const userNameEl = document.getElementById("userName");
+        const userEmailEl = document.getElementById("userEmail");
+        const avatarEl = document.getElementById("avatar");
+
+        if (userNameEl)
+          userNameEl.textContent =
+            payload.email?.split("@")[0] || "Пользователь";
+
+        if (userEmailEl) userEmailEl.textContent = payload.email || "";
+
+        if (avatarEl)
+          avatarEl.textContent = (payload.email?.[0] || "K").toUpperCase();
+      }
+
+      const logoutBtn = document.getElementById("logoutBtn");
+      if (logoutBtn) {
+        logoutBtn.onclick = () => {
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("current_user_id");
+          localStorage.removeItem(foldersKey);
+          window.location.href = "/index";
+        };
+      }
+      // ✅ При завантаженні сторінки - синхронізувати папки з сервера
+      window.addEventListener("load", () => {
+        loadFoldersFromServer();
+      });
+    </script>
+  </body>
+</html>
