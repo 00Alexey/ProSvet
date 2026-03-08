@@ -1,8 +1,13 @@
+import os
 import sys
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(BASE_DIR))
+
+API_KEY = os.getenv("API_KEY")
+DATABASE_URL = os.getenv("DATABASE_URL")
+
 
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
