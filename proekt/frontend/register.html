@@ -137,8 +137,8 @@
             <input
               id="passwordInput"
               type="password"
-              placeholder="
-Пароль (мин. 6 символов)"
+              maxlength="72"
+              placeholder="Пароль - (мин. 6 символов)"
               class="w-full px-4 py-3 rounded-lg border border-border bg-muted focus:outline-none focus:ring-2 focus:ring-primary"
               required
             />
@@ -278,9 +278,8 @@
 
         // ограничение bcrypt (72 bytes)
         if (new TextEncoder().encode(password).length > 72) {
-          alert("Пароль слишком длинный (максимум 72 символа)");
-          password = password.slice(0, 72);
-          passwordConfirm = passwordConfirm.slice(0, 72);
+          showError("password", "Пароль слишком длинный (максимум 72 символа)");
+          return;
         }
 
         // Валідація
