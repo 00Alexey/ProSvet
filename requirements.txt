@@ -7,3 +7,5 @@ passlib[bcrypt]
 python-jose[cryptography]
 python-docx
 python-pptx
+passlib[bcrypt]==1.7.4
+bcrypt==3.2.2
