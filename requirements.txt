@@ -128,7 +128,7 @@ notebook_shim==0.2.4
 numba==0.63.1
 numpy==2.3.4
 omegaconf==2.3.0
-onnxruntime==1.23.2
+onnxruntime
 openai-whisper==20250625
 openpyxl==3.1.5
 opt_einsum==3.4.0
