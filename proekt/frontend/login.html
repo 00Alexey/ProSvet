@@ -151,15 +151,15 @@
 
       // Форматирование ошибок от сервера
       function getServerErrorMessage(error) {
-        if (!error) return 'Ошибка при входе';
+        if (!error) return "Ошибка при входе";
         const detail = error?.detail;
-        if (typeof detail === 'string') return detail;
+        if (typeof detail === "string") return detail;
         if (Array.isArray(detail)) {
           return detail
             .map((item) => (item?.msg ? item.msg : JSON.stringify(item)))
-            .join(' | ');
+            .join(" | ");
         }
-        if (typeof detail === 'object') {
+        if (typeof detail === "object") {
           if (detail?.message) return detail.message;
           return JSON.stringify(detail);
         }
@@ -193,7 +193,12 @@
         e.preventDefault();
 
         const email = emailInput.value.trim();
-        const password = passwordInput.value;
+        let password = passwordInput.value;
+
+        // ограничение bcrypt (72 bytes)
+        if (new TextEncoder().encode(password).length > 72) {
+          password = password.slice(0, 72);
+        }
 
         // Валідація
         let isValid = true;
