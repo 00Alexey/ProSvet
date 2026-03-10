@@ -2,7 +2,7 @@
 // const API_URL = "http://127.0.0.1:8000";
 
 // На продакшн
-const API_URL = "https://your-app-name.onrender.com";
+const API_URL = "https://prosvet-s4q3.onrender.com";
 
 async function register(email, password) {
   try {
